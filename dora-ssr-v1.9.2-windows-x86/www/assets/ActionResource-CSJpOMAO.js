@@ -1,0 +1,1 @@
+import{t as e}from"./Info-DzMn70b9.js";import{a as t,t as n}from"./PathUtils-9WdksAyf.js";var r=(r,i)=>i&&n(r,i,e.path)?t(e.path.relative(i,r),e.path):t(e.path.normalize(r),e.path).replace(/^\/+/,``),i=(e,t)=>`/${r(e,t)}`;export{i as t};

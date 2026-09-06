@@ -1,0 +1,551 @@
+# Developing Editors and Tools with ImGui
+
+## 1. Introduction
+
+In the game development process, an intuitive and efficient user interface (UI) is essential for editors and debugging tools. However, Dora SSR, as a code-focused engine, currently does not provide built-in editors or debugging tools. Therefore, developers need to quickly develop and customize these tools according to their game projects' needs. Fortunately, Dora SSR provides the **ImGui** library, which makes it easy to create such auxiliary UIs.
+
+**ImGui** (Immediate Mode GUI) is an immediate mode graphical user interface library widely used for its simplicity and efficiency. This tutorial will introduce how to use the **ImGui** library provided by **Dora SSR** to develop UIs for game editors or debugging tools.
+
+## 2. Philosophy, Advantages, and Disadvantages of ImGui Framework
+
+### 2.1 Philosophy
+
+The core philosophy of ImGui is **immediate mode**, which means that the UI is redrawn every frame. This differs from traditional retained mode, which maintains a UI state tree; immediate mode directly draws the UI based on the current program state.
+
+### 2.2 Advantages
+
+- **Easy to Use**: No need to manage complex UI states; UI elements can be described directly in code.
+- **Rapid Iteration**: Suitable for quick prototyping and developing debugging tools.
+- **Lightweight**: No need to integrate large UI frameworks, reducing resource consumption.
+- **Highly Flexible**: Can be easily embedded into the existing game engine rendering loop.
+
+### 2.3 Disadvantages
+
+- **Not Suitable for Complex UIs**: It may not be ideal for applications requiring highly interactive and complex layouts.
+- **Limited Styling**: The default visual style is relatively simple, and customization requires extra work, which may not meet the visual demands of game projects.
+- **Performance Overhead**: In very complex UI scenarios, redrawing every frame may lead to performance issues.
+
+## 4. Basic Usage
+
+### 4.1 Creating a Simple Window
+
+The following example demonstrates how to create a simple ImGui window:
+
+```lua
+local ImGui <const> = require("ImGui")
+local threadLoop <const> = require("threadLoop")
+
+threadLoop(function()
+	ImGui.Begin("Example Window", function()
+		ImGui.Text("Welcome to ImGui with Dora SSR!")
+		ImGui.Separator()
+		ImGui.TextWrapped("This is a simple example window showcasing basic text and a separator.")
+	end)
+end)
+```
+
+**Explanation**:
+
+- The `threadLoop` function is used to repeatedly execute operations in the main thread.
+- The `ImGui.Begin` function is used to create a window and specify the window's title.
+- The `ImGui.Text` function is used to draw text.
+- The `ImGui.Separator` function is used to draw a separator line.
+- The `ImGui.TextWrapped` function is used to draw a block of text with automatic line wrapping.
+
+### 4.2 Adding Interactive Elements
+
+You can add interactive elements such as buttons and input fields in the window:
+
+```lua
+local ImGui <const> = require("ImGui")
+local threadLoop <const> = require("threadLoop")
+local Buffer <const> = require("Buffer")
+
+local inputText = Buffer(200)
+inputText.text = "Default Text"
+threadLoop(function()
+	ImGui.Begin("Interaction Example", function()
+		if ImGui.Button("Click Me") then
+			print("Button Clicked!")
+		end
+		if ImGui.InputText("Input Field", inputText) then
+			print("Input Content: " .. inputText.text)
+		end
+	end)
+end)
+```
+
+**Explanation**:
+
+- The `ImGui.Button` function is used to create a button and specify the button's label.
+- The `ImGui.InputText` function is used to create an input field and specify the field's label and buffer.
+
+## 5. Example of Creating a Game Editor
+
+### 5.1 Object Property Editor
+
+The object property editor is a core component of the game editor, used to view and modify the properties of game objects.
+
+```lua
+local ImGui <const> = require("ImGui")
+local threadLoop <const> = require("threadLoop")
+local Buffer <const> = require("Buffer")
+local Vec2 <const> = require("Vec2")
+
+-- Assume we have a game object with the following properties
+local gameObject = {
+	name = "Player",
+	position = { x = 0.0, y = 0.0 },
+	rotation = 0.0,
+	scale = { x = 1.0, y = 1.0 },
+	isActive = true
+}
+
+local nameBuffer = Buffer(100)
+nameBuffer.text = gameObject.name
+
+threadLoop(function()
+	ImGui.SetNextWindowSize(Vec2(300, 400), "FirstUseEver")
+	ImGui.Begin("Object Property Editor", function()
+		-- Edit object name
+		if ImGui.InputText("Name", nameBuffer) then
+			gameObject.name = nameBuffer.text
+		end
+
+		-- Edit position
+		local changed, x, y = ImGui.InputFloat2("Position", gameObject.position.x, gameObject.position.y)
+		if changed then
+			gameObject.position.x = x
+			gameObject.position.y = y
+		end
+
+		-- Edit rotation
+		local changed, rotation = ImGui.DragFloat("Rotation", gameObject.rotation, 1.0, 0.0, 360.0, "%.1f°")
+		if changed then
+			gameObject.rotation = rotation
+		end
+
+		-- Edit scale
+		local changed, sx, sy = ImGui.InputFloat2("Scale", gameObject.scale.x, gameObject.scale.y)
+		if changed then
+			gameObject.scale.x = sx
+			gameObject.scale.y = sy
+		end
+
+		-- Edit active state
+		local changed, isActive = ImGui.Checkbox("Is Active", gameObject.isActive)
+		if changed then
+			gameObject.isActive = isActive
+		end
+
+		-- Output the current state of the object
+		if ImGui.Button("Output State") then
+			print("Current Object State:")
+			p(gameObject)
+		end
+	end)
+end)
+```
+
+**Explanation**:
+
+- Use `InputText` to edit string properties.
+- Use `InputFloat2` and `DragFloat` to edit numerical properties.
+- Use `Checkbox` to edit boolean properties.
+
+### 5.2 Scene Hierarchy View
+
+The Scene Hierarchy View displays all game objects in the scene, presented in a tree structure.
+
+```lua
+local ImGui = require("ImGui")
+local threadLoop = require("threadLoop")
+
+-- Assume we have a list of scene objects with parent-child relationships
+local sceneObjects = {
+	{
+		name = "Root",
+		children = {
+			{
+				name = "Player",
+				children = {}
+			},
+			{
+				name = "Enemy",
+				children = {
+					{ name = "Enemy1", children = {} },
+					{ name = "Enemy2", children = {} },
+				}
+			},
+		}
+	}
+}
+
+local leafFlags = {"Leaf"}
+local empty = function() end
+
+-- Recursive function to draw the scene tree
+local function drawSceneTree(nodes)
+	for _, node in ipairs(nodes) do
+		if #node.children > 0 then
+			ImGui.TreeNode(node.name, function()
+				drawSceneTree(node.children)
+			end)
+		else
+			ImGui.TreeNodeEx(node.name, node.name, leafFlags, empty)
+		end
+	end
+end
+
+threadLoop(function()
+	ImGui.Begin("Scene Hierarchy View", function()
+		drawSceneTree(sceneObjects)
+	end)
+end)
+```
+
+**Note**:
+
+- Use `TreeNode` and `TreePop` to create a tree structure.
+- Recursively draw each node and its children.
+
+### 5.3 Resource Browser
+
+The Resource Browser is used to view and select resources in the project, such as textures, models, and audio files.
+
+```lua
+local ImGui <const> = require("ImGui")
+local threadLoop <const> = require("threadLoop")
+
+-- Resource list
+local resources = {
+	textures = { "texture1.png", "texture2.png", "texture3.png" },
+	models = { "model1.obj", "model2.obj" },
+	sounds = { "sound1.wav", "sound2.wav" }
+}
+
+threadLoop(function()
+	ImGui.Begin("Resource Browser", function()
+		if ImGui.CollapsingHeader("Textures") then
+			for _, texture in ipairs(resources.textures) do
+				if ImGui.Selectable(texture) then
+					print("Selected Texture: " .. texture)
+				end
+			end
+		end
+
+		if ImGui.CollapsingHeader("Models") then
+			for _, model in ipairs(resources.models) do
+				if ImGui.Selectable(model) then
+					print("Selected Model: " .. model)
+				end
+			end
+		end
+
+		if ImGui.CollapsingHeader("Audio") then
+			for _, sound in ipairs(resources.sounds) do
+				if ImGui.Selectable(sound) then
+					print("Selected Audio: " .. sound)
+				end
+			end
+		end
+	end)
+end)
+```
+
+**Note**:
+
+- Use `CollapsingHeader` to group resource types.
+- Use `Selectable` for list items to allow users to select resources.
+
+### 5.4 Material Editor
+
+The Material Editor allows users to adjust material properties such as color, texture, and shader parameters.
+
+```lua
+local ImGui <const> = require("ImGui")
+local threadLoop <const> = require("threadLoop")
+local Buffer <const> = require("Buffer")
+local Color3 <const> = require("Color3")
+
+-- Material object
+local material = {
+	name = "BasicMaterial",
+	color = { r = 255, g = 255, b = 255 },
+	texture = "default.png",
+	shininess = 32.0
+}
+
+-- Available texture list
+local textures = { "default.png", "texture1.png", "texture2.png" }
+local currentTextureIndex = 1
+
+local nameBuffer = Buffer(100)
+nameBuffer.text = material.name
+
+threadLoop(function()
+	ImGui.Begin("Material Editor", function()
+		-- Edit material name
+		if ImGui.InputText("Name", nameBuffer) then
+			material.name = nameBuffer.text
+		end
+
+		-- Edit color
+		local color = Color3(material.color.r, material.color.g, material.color.b)
+		if ImGui.ColorEdit3("Color", color) then
+			material.color.r, material.color.g, material.color.b = color.r, color.g, color.b
+		end
+
+		local changed = false
+		changed, currentTextureIndex = ImGui.Combo("Texture", currentTextureIndex, textures)
+		if changed then
+			material.texture = textures[currentTextureIndex]
+		end
+
+		-- Edit shininess
+		local changed, shininess = ImGui.DragFloat("Shininess", material.shininess, 1.0, 0.0, 128.0, "%.0f")
+		if changed then
+			material.shininess = shininess
+		end
+
+		-- Output current material status
+		if ImGui.Button("Output Status") then
+			print("Current Material Status:")
+			p(material)
+		end
+	end)
+end)
+```
+
+**Note**:
+
+- Use `ColorEdit3` for color selection.
+- Use `Combo` to create a dropdown menu for selecting textures.
+- Use `DragFloat` to adjust numerical parameters.
+
+### 5.5 Console Window
+
+Implement a simple console window for inputting commands and displaying logs.
+
+```lua
+local ImGui <const> = require("ImGui")
+local threadLoop <const> = require("threadLoop")
+local Buffer <const> = require("Buffer")
+local Vec2 <const> = require("Vec2")
+
+local logs = {}
+local inputBuffer = Buffer(200)
+
+threadLoop(function()
+	ImGui.SetNextWindowSize(Vec2(300, 200), "FirstUseEver")
+	ImGui.Begin("Console", function()
+		-- Display log area
+		ImGui.BeginChild("LogArea", Vec2(0, -25), function()
+			for _, log in ipairs(logs) do
+				ImGui.TextWrapped(log)
+			end
+			if ImGui.GetScrollY() >= ImGui.GetScrollMaxY() then
+				ImGui.SetScrollHereY(1.0)
+			end
+		end)
+		-- Input area
+		if ImGui.InputText("Enter Command", inputBuffer, { "EnterReturnsTrue" }) then
+			local command = inputBuffer.text
+			table.insert(logs, "> " .. command)
+			-- Execute command (here simply echoing)
+			table.insert(logs, "Execution Result: Command [" .. command .. "] has been executed.")
+			inputBuffer.text = ""
+		end
+	end)
+end)
+```
+
+**Explanation**：
+
+- Use `BeginChild` to create a log display area.
+- Use `InputText` to accept user input and handle commands upon pressing Enter.
+- Use `SetScrollHereY` to keep the scrollbar at the bottom.
+
+### 5.6 Status Bar and Toolbar
+
+Add a status bar and toolbar to the editor window, providing quick access to commonly used functions.
+
+```lua
+local ImGui <const> = require("ImGui")
+local threadLoop <const> = require("threadLoop")
+local Vec2 <const> = require("Vec2")
+
+threadLoop(function()
+	ImGui.Begin("Editor Main Window", { "MenuBar", "AlwaysAutoResize" }, function()
+		-- Toolbar
+		ImGui.BeginMenuBar(function()
+			ImGui.BeginMenu("File", function()
+				if ImGui.MenuItem("New") then
+					print("New File")
+				end
+				if ImGui.MenuItem("Save") then
+					print("Save File")
+				end
+			end)
+			ImGui.BeginMenu("Edit", function()
+				if ImGui.MenuItem("Undo") then
+					print("Undo Operation")
+				end
+			end)
+		end)
+
+		-- Main content area
+		ImGui.Text("This is the main content area")
+		ImGui.Dummy(Vec2(0, 100))
+
+		-- Status bar
+		ImGui.BeginChild("StatusBar", Vec2(0, 20), function()
+			ImGui.Text("Status: Ready")
+		end)
+	end)
+end)
+```
+
+**Explanation**：
+
+- Use `BeginMenuBar` to create a menu bar or toolbar.
+- Add a `BeginChild` in the main window to simulate the status bar.
+
+## 6. Optimization Tips: Extracting Anonymous Functions to Reduce Memory Allocation
+
+### 6.1 Problem Analysis
+
+When developing with the **ImGui** library, a significant number of anonymous functions (closures) may be created each frame, leading to frequent memory allocation and garbage collection, which can negatively impact performance.
+
+### 6.2 Solution
+
+**Extract Anonymous Functions**: Extract anonymous functions into local functions to avoid creating new function objects every frame.
+
+### 6.3 Optimization Methods
+
+#### 6.3.1 Extracting Anonymous Functions as Local Functions
+
+**Example**:
+
+* Before Optimization:
+
+```lua
+threadLoop(function()
+	ImGui.Begin("Example Window", function()
+		ImGui.Text("This is an example window")
+	end)
+end)
+```
+
+* After Optimization:
+
+```lua
+local function drawExampleWindow()
+	ImGui.Text("This is an example window")
+end
+
+threadLoop(function()
+	ImGui.Begin("Example Window", drawExampleWindow)
+end)
+```
+
+#### 6.3.2 Using Function Caching Mechanism
+
+**Example**:
+
+* Before Optimization:
+
+```lua
+local objects = {
+	{ name = "Object1", id = 1 },
+	{ name = "Object2", id = 2 },
+	{ name = "Object3", id = 3 },
+}
+
+threadLoop(function()
+	ImGui.Begin("Object List", function()
+		for i, obj in ipairs(objects) do
+			ImGui.TreeNode(obj.name, function()
+				ImGui.Text("Object ID: " .. obj.id)
+			end)
+		end
+	end)
+end)
+```
+
+* After Optimization:
+
+```lua
+local objects = {
+	{ name = "Object1", id = 1 },
+	{ name = "Object2", id = 2 },
+	{ name = "Object3", id = 3 },
+}
+
+local function getTreeNodeFunction(obj)
+	if not obj.nodeFunction then
+		obj.nodeFunction = function()
+			ImGui.Text("Object ID: " .. obj.id)
+		end
+	end
+	return obj.nodeFunction
+end
+
+local function drawObjectList()
+	for _, obj in ipairs(objects) do
+		ImGui.TreeNode(obj.name, getTreeNodeFunction(obj))
+	end
+end
+
+threadLoop(function(): boolean
+	ImGui.Begin("Object List", drawObjectList)
+	return false
+end)
+```
+
+#### 6.3.3 Extracting Reused Variables Outside the Closure
+
+**Example**:
+
+* Before Optimization:
+
+```lua
+threadLoop(function()
+	ImGui.Begin("Example Window", { "AlwaysAutoResize" }, function()
+		ImGui.Text("This is an example window")
+	end)
+end)
+```
+
+* After Optimization:
+
+```lua
+local windowFlags = { "AlwaysAutoResize" }
+local drawFunction = function()
+	ImGui.Text("This is an example window")
+end
+threadLoop(function()
+	ImGui.Begin("Example Window", windowFlags, drawFunction)
+end)
+```
+
+### 6.4 Summary
+
+By extracting anonymous functions to the outer layer of closures, you can:
+
+- **Reduce Memory Allocation Each Frame**: Avoid frequent creation of new functions and objects, reducing garbage collection pressure.
+- **Improve Performance**: Minimize unnecessary overhead, allowing your game editor to run more smoothly.
+- **Enhance Code Structure**: Clearly separate logic, improving code readability and maintainability.
+
+## 7. Development Recommendations
+
+- **Fully Utilize Immediate Mode**: Since ImGui is immediate mode, you can dynamically update the UI based on real-time program states.
+- **Pay Attention to Performance**: In complex UIs, minimize unnecessary drawing and use conditional statements to control UI element updates when necessary.
+- **Organize Code Structure**: Encapsulate reusable UI components into functions to enhance code readability and maintainability.
+- **Monitor Performance**: Use profiling tools to monitor memory allocation and CPU usage to identify performance bottlenecks in a timely manner.
+- **Code Review**: Regularly review code to identify potential optimization points and avoid unnecessary resource wastage.
+- **Learn Best Practices**: For more ImGui usage methods, refer to official documentation and community experiences to learn and apply the best coding practices.
+
+## 8. Conclusion
+
+Through this tutorial, you should have a comprehensive understanding of how to use the ImGui library in Dora SSR to develop UIs for game editors or debugging tools. With its simplicity and efficiency, ImGui is particularly suitable for tool development and rapid prototyping. I hope you can fully leverage its advantages in your actual projects.

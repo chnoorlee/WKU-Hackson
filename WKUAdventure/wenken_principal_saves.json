@@ -1,0 +1,381 @@
+{
+	"lastActiveSlot" : 0,
+	"version" : 8,
+	"profile" : {
+		"unlockedProjects" : [
+			"geh",
+			"lab",
+			"slac",
+			"arena",
+			"cbpm",
+			"ghk",
+			"dormitory",
+			"dining",
+			"faculty",
+			"csmt",
+			"track",
+			"farm",
+			"administration"
+		],
+		"unlockedGalleryImages" : [
+			"Image/Collection/geh_exterior.png",
+			"Image/Collection/geh_gate_sunset.png",
+			"Image/Collection/geh_gate_day.png",
+			"Image/Collection/geh_gate_night.png",
+			"Image/Collection/geh_language_center.jpg",
+			"Image/Collection/lab_exterior.png",
+			"Image/Collection/lab_glass_facade.png",
+			"Image/Collection/lab_day.png",
+			"Image/Collection/lab_sunset.png",
+			"Image/Collection/lab_night.png",
+			"Image/Collection/lab_atrium.jpg",
+			"Image/Collection/slac_exterior.png",
+			"Image/Collection/slac_atrium.jpg",
+			"Image/Collection/slac_stairs.png",
+			"Image/Collection/library_exterior.png",
+			"Image/Collection/library_reading.jpg",
+			"Image/Collection/slac_trail.png",
+			"Image/Collection/slac_lake.png",
+			"Image/Collection/slac_walkway.png",
+			"Image/Collection/slac_pond.png",
+			"Image/Collection/arena_exterior.jpg",
+			"Image/Collection/arena_fitness.jpg",
+			"Image/Collection/arena_pool.jpg",
+			"Image/Collection/cbpm_exterior.png",
+			"Image/Collection/cbpm_entrance.png"
+		],
+		"language" : "zh",
+		"principalId" : "gu-yanchuan",
+		"largeText" : false,
+		"introSeen" : true,
+		"musicEnabled" : false,
+		"reducedMotion" : false,
+		"sfxEnabled" : true
+	},
+	"slots" : [
+		{
+			"occupied" : true,
+			"updatedAt" : "2026 年 9 月 10 日 · 0/13 完工",
+			"game" : {
+				"log" : [
+					"2026 年 9 月：新任校长到岗，校园建设期开始。"
+				],
+				"screen" : "play",
+				"bPlusStreak" : 0,
+				"lastScore" : 0,
+				"activatedSynergies" : [],
+				"aStreak" : 0,
+				"claimedMilestones" : [],
+				"metrics" : {
+					"money" : 86,
+					"health" : 90,
+					"students" : 860,
+					"satisfaction" : 48,
+					"research" : 26,
+					"reputation" : 38,
+					"capacity" : 1200
+				},
+				"lastGrade" : "-",
+				"grades" : [],
+				"eventResolved" : false,
+				"monthIndex" : 0,
+				"projects" : [
+					{
+						"level" : 1,
+						"progress" : -1,
+						"paused" : false,
+						"projectId" : "geh"
+					},
+					{
+						"level" : 1,
+						"progress" : -1,
+						"paused" : false,
+						"projectId" : "lab"
+					},
+					{
+						"level" : 1,
+						"progress" : -1,
+						"paused" : false,
+						"projectId" : "slac"
+					},
+					{
+						"level" : 1,
+						"progress" : -1,
+						"paused" : false,
+						"projectId" : "arena"
+					},
+					{
+						"level" : 1,
+						"progress" : -1,
+						"paused" : false,
+						"projectId" : "cbpm"
+					},
+					{
+						"level" : 1,
+						"progress" : -1,
+						"paused" : false,
+						"projectId" : "ghk"
+					},
+					{
+						"level" : 1,
+						"progress" : -1,
+						"paused" : false,
+						"projectId" : "dormitory"
+					},
+					{
+						"level" : 1,
+						"progress" : -1,
+						"paused" : false,
+						"projectId" : "dining"
+					},
+					{
+						"level" : 1,
+						"progress" : -1,
+						"paused" : false,
+						"projectId" : "faculty"
+					},
+					{
+						"level" : 1,
+						"progress" : -1,
+						"paused" : false,
+						"projectId" : "csmt"
+					},
+					{
+						"level" : 1,
+						"progress" : -1,
+						"paused" : false,
+						"projectId" : "track"
+					},
+					{
+						"level" : 1,
+						"progress" : -1,
+						"paused" : false,
+						"projectId" : "farm"
+					},
+					{
+						"level" : 1,
+						"progress" : -1,
+						"paused" : false,
+						"projectId" : "administration"
+					}
+				]
+			}
+		},
+		{
+			"occupied" : false,
+			"updatedAt" : "空存档",
+			"game" : {
+				"log" : [
+					"2026 年 9 月：新任校长到岗，校园建设期开始。"
+				],
+				"screen" : "play",
+				"bPlusStreak" : 0,
+				"lastScore" : 0,
+				"activatedSynergies" : [],
+				"aStreak" : 0,
+				"claimedMilestones" : [],
+				"metrics" : {
+					"money" : 86,
+					"health" : 90,
+					"students" : 860,
+					"capacity" : 1200,
+					"reputation" : 38,
+					"research" : 26,
+					"satisfaction" : 48
+				},
+				"lastGrade" : "-",
+				"grades" : [],
+				"eventResolved" : false,
+				"monthIndex" : 0,
+				"projects" : [
+					{
+						"level" : 1,
+						"progress" : -1,
+						"paused" : false,
+						"projectId" : "geh"
+					},
+					{
+						"level" : 1,
+						"progress" : -1,
+						"paused" : false,
+						"projectId" : "lab"
+					},
+					{
+						"level" : 1,
+						"progress" : -1,
+						"paused" : false,
+						"projectId" : "slac"
+					},
+					{
+						"level" : 1,
+						"progress" : -1,
+						"paused" : false,
+						"projectId" : "arena"
+					},
+					{
+						"level" : 1,
+						"progress" : -1,
+						"paused" : false,
+						"projectId" : "cbpm"
+					},
+					{
+						"level" : 1,
+						"progress" : -1,
+						"paused" : false,
+						"projectId" : "ghk"
+					},
+					{
+						"level" : 1,
+						"progress" : -1,
+						"paused" : false,
+						"projectId" : "dormitory"
+					},
+					{
+						"level" : 1,
+						"progress" : -1,
+						"paused" : false,
+						"projectId" : "dining"
+					},
+					{
+						"level" : 1,
+						"progress" : -1,
+						"paused" : false,
+						"projectId" : "faculty"
+					},
+					{
+						"level" : 1,
+						"progress" : -1,
+						"paused" : false,
+						"projectId" : "csmt"
+					},
+					{
+						"level" : 1,
+						"progress" : -1,
+						"paused" : false,
+						"projectId" : "track"
+					},
+					{
+						"level" : 1,
+						"progress" : -1,
+						"paused" : false,
+						"projectId" : "farm"
+					},
+					{
+						"level" : 1,
+						"progress" : -1,
+						"paused" : false,
+						"projectId" : "administration"
+					}
+				]
+			}
+		},
+		{
+			"occupied" : false,
+			"updatedAt" : "空存档",
+			"game" : {
+				"log" : [
+					"2026 年 9 月：新任校长到岗，校园建设期开始。"
+				],
+				"screen" : "play",
+				"bPlusStreak" : 0,
+				"lastScore" : 0,
+				"activatedSynergies" : [],
+				"aStreak" : 0,
+				"claimedMilestones" : [],
+				"metrics" : {
+					"money" : 86,
+					"health" : 90,
+					"students" : 860,
+					"capacity" : 1200,
+					"reputation" : 38,
+					"research" : 26,
+					"satisfaction" : 48
+				},
+				"lastGrade" : "-",
+				"grades" : [],
+				"eventResolved" : false,
+				"monthIndex" : 0,
+				"projects" : [
+					{
+						"level" : 1,
+						"progress" : -1,
+						"paused" : false,
+						"projectId" : "geh"
+					},
+					{
+						"level" : 1,
+						"progress" : -1,
+						"paused" : false,
+						"projectId" : "lab"
+					},
+					{
+						"level" : 1,
+						"progress" : -1,
+						"paused" : false,
+						"projectId" : "slac"
+					},
+					{
+						"level" : 1,
+						"progress" : -1,
+						"paused" : false,
+						"projectId" : "arena"
+					},
+					{
+						"level" : 1,
+						"progress" : -1,
+						"paused" : false,
+						"projectId" : "cbpm"
+					},
+					{
+						"level" : 1,
+						"progress" : -1,
+						"paused" : false,
+						"projectId" : "ghk"
+					},
+					{
+						"level" : 1,
+						"progress" : -1,
+						"paused" : false,
+						"projectId" : "dormitory"
+					},
+					{
+						"level" : 1,
+						"progress" : -1,
+						"paused" : false,
+						"projectId" : "dining"
+					},
+					{
+						"level" : 1,
+						"progress" : -1,
+						"paused" : false,
+						"projectId" : "faculty"
+					},
+					{
+						"level" : 1,
+						"progress" : -1,
+						"paused" : false,
+						"projectId" : "csmt"
+					},
+					{
+						"level" : 1,
+						"progress" : -1,
+						"paused" : false,
+						"projectId" : "track"
+					},
+					{
+						"level" : 1,
+						"progress" : -1,
+						"paused" : false,
+						"projectId" : "farm"
+					},
+					{
+						"level" : 1,
+						"progress" : -1,
+						"paused" : false,
+						"projectId" : "administration"
+					}
+				]
+			}
+		}
+	]
+}

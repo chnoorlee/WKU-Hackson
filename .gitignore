@@ -1,0 +1,19 @@
+# ---- Build artifacts ----
+.artifacts/
+.artifacts-v2/
+.codex-build/
+
+# ---- Generated / temp output ----
+WKUAdventure/output/
+WKUAdventure/tmp/
+WKUAdventure/.download/
+WKUAdventure/Download/
+WKUAdventure/WKUAfterlightSaves/
+
+# ---- Debug screenshots ----
+*.tga
+
+# ---- OS junk ----
+.DS_Store
+Thumbs.db
+desktop.ini

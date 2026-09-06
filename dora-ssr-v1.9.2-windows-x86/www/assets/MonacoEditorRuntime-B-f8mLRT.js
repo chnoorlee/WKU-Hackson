@@ -1,0 +1,1 @@
+import{qt as e}from"./mui-CWCVyc1Y.js";import{n as t,t as n}from"./monacoBase-D00BUnX2.js";import{f as r}from"./PathUtils-9WdksAyf.js";import{i,n as a}from"./Editor-DNtIzXXm.js";var o=e();r({monaco:n,typescript:t}),i.config({monaco:n});function s(e){let{filePath:t,...r}=e;return(0,o.jsx)(a,{...r,path:n.Uri.file(t).toString()})}export{s as default};

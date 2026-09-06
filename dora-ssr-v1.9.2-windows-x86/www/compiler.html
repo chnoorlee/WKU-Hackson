@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<script>self["MonacoEnvironment"] = (function (paths) {
+          return {
+            globalAPI: false,
+            getWorkerUrl : function (moduleId, label) {
+              var result =  paths[label];
+              if (/^((http:)|(https:)|(file:)|(\/\/))/.test(result)) {
+                var currentUrl = String(window.location);
+                var currentOrigin = currentUrl.substr(0, currentUrl.length - window.location.hash.length - window.location.search.length - window.location.pathname.length);
+                if (result.substring(0, currentOrigin.length) !== currentOrigin) {
+                  var js = '/*' + label + '*/importScripts("' + result + '");';
+                  var blob = new Blob([js], { type: 'application/javascript' });
+                  return URL.createObjectURL(blob);
+                }
+              }
+              return result;
+            }
+          };
+        })({
+  "editorWorkerService": "/monacoeditorwork/editor.worker.bundle.js",
+  "typescript": "/monacoeditorwork/ts.worker.bundle.js",
+  "javascript": "/monacoeditorwork/ts.worker.bundle.js"
+});</script>
+
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Dora TypeScript Compiler</title>
+		<script type="module" crossorigin src="/assets/compiler-CTnTE_0u.js"></script>
+		<link rel="modulepreload" crossorigin href="/assets/modulepreload-polyfill-Dezn_h7o.js">
+		<link rel="modulepreload" crossorigin href="/assets/rolldown-runtime-CMxvf4Kt.js">
+		<link rel="modulepreload" crossorigin href="/assets/preload-helper-zJ_50EbN.js">
+		<link rel="modulepreload" crossorigin href="/assets/typescript.contribution-7Vn9frZJ.js">
+		<link rel="modulepreload" crossorigin href="/assets/monacoBase-D00BUnX2.js">
+		<link rel="modulepreload" crossorigin href="/assets/Path-BbWdyoTj.js">
+		<link rel="modulepreload" crossorigin href="/assets/Info-DzMn70b9.js">
+		<link rel="modulepreload" crossorigin href="/assets/PathUtils-9WdksAyf.js">
+		<link rel="modulepreload" crossorigin href="/assets/TranspileTS-DJto10Rm.js">
+		<link rel="stylesheet" crossorigin href="/assets/typescript-v5rfKcVs.css">
+	</head>
+	<body>
+	</body>
+</html>
